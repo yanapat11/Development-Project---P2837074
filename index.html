@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | PAT Store</title>
+  <link rel="stylesheet" href="../project.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+    td, th { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    input, textarea { display: block; width: 100%; margin-bottom: 10px; padding: 10px; }
+  </style>
+</head>
+<body>
+  <section id="page-header">
+    <h2>Admin Dashboard</h2>
+    <p>Manage products, orders and messages</p>
+  </section>
+
+  <section class="section-p1">
+    <h2>Add Product</h2>
+    <form id="add-product-form">
+      <input name="slug" placeholder="Unique slug e.g. nike-hoodie-black" required>
+      <input name="brand" placeholder="Brand" required>
+      <input name="name" placeholder="Product name" required>
+      <input name="color" placeholder="Color">
+      <input name="price" placeholder="Price" type="number" step="0.01" required>
+      <input name="image" placeholder="Image path e.g. img/p17.png" required>
+      <textarea name="description" placeholder="Description"></textarea>
+      <input name="category" placeholder="Category" value="streetwear">
+      <input name="stock" placeholder="Stock" type="number" value="20">
+      <button class="normal" type="submit">Add Product</button>
+    </form>
+
+    <h2>Products</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Brand</th><th>Name</th><th>Price</th><th>Stock</th></tr></thead>
+      <tbody id="products"></tbody>
+    </table>
+
+    <h2>Orders</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Total</th><th>Status</th></tr></thead>
+      <tbody id="orders"></tbody>
+    </table>
+
+    <h2>Messages</h2>
+    <table>
+      <thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th></tr></thead>
+      <tbody id="messages"></tbody>
+    </table>
+  </section>
+
+  <script>
+    async function loadAdmin() {
+      const response = await fetch("/admin/data");
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "Admin access only. Login as admin first.");
+        window.location.href = "../login.html";
+        return;
+      }
+
+      document.querySelector("#products").innerHTML = data.products.map(p => `
+        <tr><td>${p.id}</td><td>${p.brand}</td><td>${p.name}</td><td>£${p.price}</td><td>${p.stock}</td></tr>
+      `).join("");
+
+      document.querySelector("#orders").innerHTML = data.orders.map(o => `
+        <tr><td>${o.id}</td><td>${o.customer_name}</td><td>${o.customer_email}</td><td>£${o.total}</td><td>${o.payment_status}</td></tr>
+      `).join("");
+
+      document.querySelector("#messages").innerHTML = data.messages.map(m => `
+        <tr><td>${m.name}</td><td>${m.email}</td><td>${m.subject}</td><td>${m.message}</td></tr>
+      `).join("");
+    }
+
+    document.querySelector("#add-product-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+
+      const response = await fetch("/api/admin/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(formData.entries()))
+      });
+
+      const data = await response.json();
+      alert(data.message || data.error);
+
+      if (response.ok) {
+        event.target.reset();
+        loadAdmin();
+      }
+    });
+
+    loadAdmin();
+  </script>
+</body>
+</html>

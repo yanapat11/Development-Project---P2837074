@@ -1,0 +1,97 @@
+@media (max-width: 768px) {
+  #header {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  #navbar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  #navbar li {
+    padding: 5px;
+  }
+
+  #hero {
+    padding: 0 20px;
+    height: 70vh;
+  }
+
+  h1 {
+    font-size: 34px;
+    line-height: 40px;
+  }
+
+  h2 {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .section-p1 {
+    padding: 30px 20px;
+  }
+
+  #product1 .pro-container {
+    justify-content: center;
+  }
+
+  #product1 .pro {
+    width: 100%;
+    max-width: 330px;
+  }
+
+  #contact-details {
+    flex-direction: column;
+  }
+
+  #contact-details .details,
+  #contact-details .Map {
+    width: 100%;
+  }
+
+  #contact-details iframe {
+    width: 100%;
+    height: 300px;
+  }
+
+  #form-details {
+    flex-direction: column;
+    margin: 20px;
+    padding: 25px;
+  }
+
+  #form-details form {
+    width: 100%;
+  }
+
+  #prodeatails {
+    flex-direction: column;
+  }
+
+  #prodeatails .single-pro-image {
+    width: 100%;
+    margin-right: 0;
+    left: 0;
+  }
+
+  #prodeatails .single-pro-deatails {
+    width: 100%;
+  }
+
+  #cart {
+    overflow-x: auto;
+  }
+
+  #cart table {
+    min-width: 700px;
+  }
+
+  #newsletter .form {
+    width: 100%;
+  }
+
+  footer {
+    flex-direction: column;
+  }
+}
